@@ -1,0 +1,30 @@
+{
+	"name": "IAM360: Get fitness overview",
+	"nodes": [
+		{
+			"parameters": {},
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 0],
+			"id": "e1a79ce5-9c3f-4dd7-9fc0-57fe66268629",
+			"name": "Run manually"
+		},
+		{
+			"parameters": { "resource": "overview", "operation": "get" },
+			"type": "n8n-nodes-iam360.iam360",
+			"typeVersion": 1,
+			"position": [260, 0],
+			"id": "34ae2260-1f04-443f-bf42-78f34fd7dc4f",
+			"name": "IAM360 overview",
+			"notesInFlow": true,
+			"notes": "Select your IAM360 OAuth2 API credential. This node only reads your fitness overview."
+		}
+	],
+	"connections": {
+		"Run manually": { "main": [[{ "node": "IAM360 overview", "type": "main", "index": 0 }]] }
+	},
+	"settings": { "executionOrder": "v1" },
+	"active": false,
+	"pinData": {},
+	"tags": []
+}

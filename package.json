@@ -1,0 +1,69 @@
+{
+	"name": "n8n-nodes-iam360",
+	"version": "0.1.0",
+	"description": "Connect IAM360 fitness records and wearable insights to n8n workflows.",
+	"license": "MIT",
+	"homepage": "https://www.iam360.ai",
+	"keywords": [
+		"n8n-community-node-package",
+		"iam360",
+		"fitness",
+		"mcp",
+		"nutrition",
+		"wearables"
+	],
+	"author": {
+		"name": "IAM360",
+		"email": "briandouglas@iam360.ai",
+		"url": "https://www.iam360.ai"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/iam360-ai/n8n-nodes-iam360.git"
+	},
+	"bugs": {
+		"email": "briandouglas@iam360.ai"
+	},
+	"packageManager": "pnpm@12.16.1",
+	"engines": {
+		"node": ">=24"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"format": "prettier --write credentials nodes tests examples docs README.md package.json tsconfig.json",
+		"test": "pnpm build && node --test tests/*.test.cjs",
+		"prepublishOnly": "pnpm lint && pnpm test"
+	},
+	"files": [
+		"dist/credentials",
+		"dist/nodes",
+		"dist/icons",
+		"README.md",
+		"LICENSE",
+		"examples",
+		"docs"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/Iam360OAuth2Api.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Iam360/Iam360.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "0.55.5",
+		"eslint": "9.39.4",
+		"prettier": "3.8.3",
+		"typescript": "5.9.3",
+		"n8n-workflow": "2.16.0"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

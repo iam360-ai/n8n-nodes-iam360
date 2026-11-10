@@ -1,0 +1,10 @@
+{
+	"node": "n8n-nodes-iam360",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Productivity", "Analytics"],
+	"resources": {
+		"credentialDocumentation": [{ "url": "https://app.iam360.ai/docs/mcp/connect" }],
+		"primaryDocumentation": [{ "url": "https://app.iam360.ai/docs/mcp" }]
+	}
+}

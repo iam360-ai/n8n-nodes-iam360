@@ -1,0 +1,32 @@
+{
+	"name": "IAM360: Get wearable metrics",
+	"nodes": [
+		{
+			"parameters": {},
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 0],
+			"id": "3353cac0-32f7-450b-bd35-9c5fa6a0631a",
+			"name": "Run manually"
+		},
+		{
+			"parameters": { "resource": "metrics", "operation": "get", "days": 14 },
+			"type": "n8n-nodes-iam360.iam360",
+			"typeVersion": 1,
+			"position": [260, 0],
+			"id": "a3ed198e-a820-4f5b-8d0a-7bf3d15c39c5",
+			"name": "IAM360 wearable metrics",
+			"notesInFlow": true,
+			"notes": "Select your IAM360 OAuth2 API credential. Use the metrics array to map named values. Missing measurements remain null."
+		}
+	],
+	"connections": {
+		"Run manually": {
+			"main": [[{ "node": "IAM360 wearable metrics", "type": "main", "index": 0 }]]
+		}
+	},
+	"settings": { "executionOrder": "v1" },
+	"active": false,
+	"pinData": {},
+	"tags": []
+}
