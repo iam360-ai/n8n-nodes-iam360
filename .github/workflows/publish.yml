@@ -1,0 +1,70 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Reviewed version tag, for example v0.1.0
+        required: true
+        type: string
+      confirmation:
+        description: Type publish-iam360 to authorize publication
+        required: true
+        type: string
+      mode:
+        description: Stage for browser approval, or publish through an existing trusted publisher
+        required: true
+        default: stage
+        type: choice
+        options:
+          - stage
+          - publish
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'iam360-ai/n8n-nodes-iam360' && inputs.confirmation == 'publish-iam360'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.16.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - name: Check package and tag
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          node -e 'const p = require("./package.json"); if (p.name !== "n8n-nodes-iam360" || process.env.RELEASE_TAG !== `v${p.version}` || process.env.GITHUB_REF !== `refs/tags/${process.env.RELEASE_TAG}`) { throw new Error("Run this workflow from the matching release tag"); }'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
+      - name: Stage with provenance for browser approval
+        if: inputs.mode == 'stage'
+        # The first release can use an npm stage-only granular token, with
+        # Bypass 2FA disabled. Approve the staged version on npmjs.com.
+        run: pnpm stage publish --access public --provenance --no-git-checks --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish with provenance
+        if: inputs.mode == 'publish'
+        # Configure the npm trusted publisher for this repository, publish.yml,
+        # and the npm environment. Leave NPM_TOKEN unset for OIDC publishing.
+        # A package-scoped granular token can bootstrap the first publication.
+        run: pnpm publish --access public --provenance --no-git-checks --ignore-scripts --publish-wait-timeout 600000
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
