@@ -43,7 +43,7 @@ n8n discovers IAM360's OAuth server and handles OAuth setup for its own callback
 
 The credential requests `fitness offline_access`, bound to `https://app.iam360.ai/api/mcp`. The fitness permission permits reading, adding, editing, and deleting the connected account's fitness data. Offline access lets n8n refresh the connection for unattended workflows. n8n manages the OAuth tokens in its credential store. The credential's connection test lists available tools and does not read fitness records.
 
-You can review or revoke connected agents in IAM360's account settings. Deleting a credential in n8n removes the local credential; revoke the connection in IAM360 as well when you want to stop the remote authorization.
+You can review or revoke connected agents in IAM360's account settings. Deleting a credential in n8n removes the local credential; revoke the connection in IAM360 as well when you want to stop the remote authorization. Revoking a provider refresh token alone does not immediately invalidate an already-issued JWT access token.
 
 ## Use the output
 
@@ -85,7 +85,7 @@ pnpm lint
 pnpm test
 ```
 
-`pnpm test` builds with the official `@n8n/node-cli` and runs behavioral tests using Node's test runner. No live IAM360 account, token, or production write is used by these tests. See [review and release notes](docs/REVIEW.md) for validation results and the remaining live checks.
+`pnpm test` builds with the official `@n8n/node-cli` and runs behavioral tests using Node's test runner. No live IAM360 account, token, or production write is used by these tests. See [review and release notes](docs/REVIEW.md) for automated checks, completed live editor acceptance, and publication steps.
 
 ## Links and support
 
